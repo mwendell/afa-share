@@ -22,7 +22,8 @@
 namespace AFAshare;
 
 defined('WPINC') || die;
-require_once __DIR__ . '/vendor/autoload.php';
+
+//require_once __DIR__ . '/vendor/autoload.php';
 
 /**
  * Add Open Graph meta tags to the header.
