@@ -1,0 +1,14 @@
+{
+	"name": "mwendell/afa-share",
+	"description": "An extremely lightweight plugin designed to simply add sharing buttons and the associated meta tags needed for them.",
+	"type": "wordpress-plugin",
+	"license": "GPL-3.0-or-later",
+	"homepage": "https://github.com/mwendell/afa-share/",
+	"authors": [
+		{
+			"name": "Michael Wendell",
+			"email": "mwendell@kwyjibo.com",
+			"homepage": "http://kwyjibo.com"
+		}
+	]
+}
