@@ -191,7 +191,7 @@ function afa_share_buttons( $shape = 'circle', $direction = 'horizontal', $short
 		} else {
 			$output .= "<i class='afa-share-icon afa-share-icon-{$key}'></i>";
 		}
-		$output .= "</li>";
+		$output .= "</a></li>";
 	}
 	$output .= "</ul>";
 
