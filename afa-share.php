@@ -28,6 +28,9 @@ if ( ! defined( 'WPINC' ) ) {
  * Add Open Graph and other meta tags to the header.
  */
 function afa_share_header_tags() {
+
+	if ( is_plugin_active( 'wordpress-seo/wp-seo.php' ) ) { return false; }
+
 	echo "<!-- AFA-SHARE META-TAGS -->\r\n";
 	$title = get_the_title();
 	$url = get_permalink();
@@ -81,11 +84,15 @@ add_action( 'wp_head', 'afa_share_header_tags', 10 );
 /**
  * Create the share buttons
  */
-function afa_share_buttons( $shape = 'circle', $direction = 'horizontal', $shortcode = false ) {
+function afa_share_buttons( $args = array() ) {
 
 	// SETTINGS AND BASE DATA
 
-	$svg_shape = $shape ?: 'circle';
+	$title = ( isset( $args['title'] ) ) ? $args['title'] : false;
+
+	$link = ( isset( $args['link'] ) ) ? $args['link'] : false;
+
+	$svg_shape = ( isset( $args['shape'] ) ) ? $args['shape'] : 'circle';
 
 	$svg_bg = array(
 		'circle'  => '<circle cx="12" cy="12" fill="[COLOR]" r="12"></circle>',
@@ -95,18 +102,17 @@ function afa_share_buttons( $shape = 'circle', $direction = 'horizontal', $short
 
 	$svg_base = str_replace( '[BACKGROUND]', $svg_bg[$svg_shape], '<svg class="icon-svg" height="24" width="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">[BACKGROUND][LOGO]</svg>' );
 
-
 	$style = 'display: inline-block; margin-left: 4px;';
 
-	if ( $direction != 'horizontal' ) {
+	if ( isset( $args['direction'] ) && $args['direction'] != 'horizontal' ) {
 		$style = 'margin-bottom: 4px;';
 	}
 
 	$output = '';
 
 	// SHARE DATA FOR THIS POST
-	$title = urlencode( get_the_title() );
-	$link = urlencode( get_permalink() );
+	$title = ( $title ) ? urlencode( $title ) : urlencode( get_the_title() );
+	$link = ( $link ) ? urlencode( $link ) : urlencode( get_permalink() );
 	$excerpt = urlencode( get_the_excerpt() );
 	$source = urlencode( get_bloginfo( 'name' ) );
 	$image = '';
@@ -196,7 +202,7 @@ function afa_share_buttons( $shape = 'circle', $direction = 'horizontal', $short
 	$output .= "</ul>";
 
 	// ECHO OR RETURN FORMATTED SHARE LINKS
-	if ( $shortcode ) {
+	if ( isset( $args['shortcode'] ) && $args['shortcode'] ) {
 		return $output;
 	} else {
 		echo $output;
@@ -204,8 +210,9 @@ function afa_share_buttons( $shape = 'circle', $direction = 'horizontal', $short
 
 }
 
-function afa_share_buttons_shortcode() {
-	return afa_share_buttons( true );
+function afa_share_buttons_shortcode( $atts = array() ) {
+	$atts['shortcode'] = true;
+	return afa_share_buttons( $atts );
 }
 
 add_shortcode( 'afa_share_buttons', 'afa_share_buttons_shortcode' );
